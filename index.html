@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>30초 PPG 데이터 수집 V1</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>30초 PPG 데이터 수집 V1</h1>
+  <p class="warn">연구·학습용입니다. 혈당을 측정하거나 의료적 판단을 제공하지 않습니다.</p>
+
+  <section class="card">
+    <video id="video" playsinline muted></video>
+    <canvas id="sample" width="64" height="64" hidden></canvas>
+    <canvas id="chart" width="640" height="180"></canvas>
+    <div id="status">① 카메라 시작을 누르세요.</div>
+    <div id="timer">30.0초</div>
+    <button id="cameraBtn">카메라 시작</button>
+    <button id="measureBtn" disabled>30초 PPG 측정</button>
+  </section>
+
+  <section class="card">
+    <label>같은 시점의 실제 혈당계/CGM 값 (mg/dL)
+      <input id="glucose" type="number" min="20" max="600" placeholder="예: 118">
+    </label>
+    <button id="saveBtn" disabled>CSV 저장</button>
+  </section>
+</main>
+<script src="ppg.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
