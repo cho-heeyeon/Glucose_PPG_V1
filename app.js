@@ -23,9 +23,7 @@ let measuring = false;
 // 1. 카메라 시작
 // --------------------------------------------------
 cameraBtn.onclick = async () => {
-
   try {
-
     stream = await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: {
@@ -44,11 +42,8 @@ cameraBtn.onclick = async () => {
       ? track.getCapabilities()
       : {};
 
-    // 지원되는 휴대폰에서는 플래시 켜기
     if (caps.torch) {
-
       try {
-
         await track.applyConstraints({
           advanced: [
             {
@@ -56,9 +51,8 @@ cameraBtn.onclick = async () => {
             }
           ]
         });
-
       } catch (e) {
-        console.log('Torch control not available:', e);
+        console.log('플래시 자동 켜기 실패:', e);
       }
     }
 
@@ -68,7 +62,6 @@ cameraBtn.onclick = async () => {
       '검지 끝으로 후면 카메라와 플래시 부위를 덮은 뒤 측정하세요.';
 
   } catch (e) {
-
     statusEl.textContent =
       '카메라 권한/HTTPS 환경을 확인하세요: ' + e.message;
   }
