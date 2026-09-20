@@ -151,15 +151,17 @@ measureBtn.onclick = async () => {
 // --------------------------------------------------
 // 3. CSV 저장
 // --------------------------------------------------
+// --------------------------------------------------
+// 3. CSV 저장
+// --------------------------------------------------
 saveBtn.onclick = () => {
 
   if (rows.length === 0) {
-
     alert('먼저 30초 PPG 측정을 진행하세요.');
     return;
   }
 
-  // 혈당계가 없으면 빈칸으로 저장
+  // 혈당계/CGM 값은 선택사항
   const value =
     glucose.value.trim() === ''
       ? ''
@@ -171,40 +173,49 @@ saveBtn.onclick = () => {
     'sample_id,t_ms,red_mean,green_mean,blue_mean,reference_glucose_mg_dl\n';
 
   const body = rows.map(x => [
-
     id,
     x.t_ms,
     x.r.toFixed(3),
     x.g.toFixed(3),
     x.b.toFixed(3),
     value
-
   ].join(',')).join('\n');
 
+  // Excel에서 한글이 깨지는 것을 방지하기 위해 BOM 추가
+  const csvContent =
+    '\uFEFF' + header + body;
+
   const blob = new Blob(
-    [
-      header + body
-    ],
-    {
-      type: 'text/csv;charset=utf-8'
-    }
+    [csvContent],
+    { type: 'text/csv;charset=utf-8;' }
   );
 
-  const a = document.createElement('a');
-
-  a.href =
+  const url =
     URL.createObjectURL(blob);
+
+  const a =
+    document.createElement('a');
+
+  a.href = url;
 
   a.download =
     'ppg_'
     + id.replace(/[:.]/g, '-')
     + '.csv';
 
+  document.body.appendChild(a);
+
   a.click();
 
-  URL.revokeObjectURL(
-    a.href
-  );
+  document.body.removeChild(a);
+
+  // 모바일에서 다운로드가 시작될 시간을 줌
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
+
+  statusEl.textContent =
+    'CSV 저장을 요청했습니다. 휴대폰 다운로드 폴더를 확인하세요.';
 };
 
 
