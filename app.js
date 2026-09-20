@@ -37,9 +37,8 @@ measureBtn.onclick=async()=>{
 };
 
 saveBtn.onclick=()=>{
-  const value=Number(glucose.value);
-  if(!value){ alert('실제 혈당계/CGM 값을 입력하세요.'); return; }
-  const id=new Date().toISOString();
+  const value = glucose.value.trim() === '' ? '' : Number(glucose.value);
+    const id=new Date().toISOString();
   const header='sample_id,t_ms,red_mean,green_mean,blue_mean,reference_glucose_mg_dl\n';
   const body=rows.map(x=>[id,x.t_ms,x.r.toFixed(3),x.g.toFixed(3),x.b.toFixed(3),value].join(',')).join('\n');
   const blob=new Blob([header+body],{type:'text/csv;charset=utf-8'});
